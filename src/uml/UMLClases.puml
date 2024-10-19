@@ -1,3 +1,93 @@
 @startuml
+left to right direction
+
+package "Domain" {
+
+    class Credenciales {
+        + Long id
+        + String username
+        + String password
+    }
+
+    class Rol {
+        + Long id
+        + String nombreRol
+    }
+
+    class Usuario {
+        + Long id
+        + String nombre
+        + String apellido1
+        + String apellido2
+        + String correo
+        + Integer telefono
+        + String direccion
+        + Credenciales credenciales
+        + Rol rol
+    }
+
+    class Hechizo {
+        + Long id
+        + String nombre
+        + int poder
+        + void ejecutar()
+        + boolean esPermitido(Usuario usuario)
+    }
+
+    class EventoMagico {
+        + Long id
+        + String descripcion
+        + LocalDateTime fecha
+        + String tipoEvento
+        + Usuario lanzador
+        + Hechizo hechizoLanzado
+    }
+
+    class Auditoria {
+        + Long id
+        + LocalDateTime fecha
+        + String accion
+        + String descripcion
+        + Usuario usuario
+        + EventoMagico eventoAuditable
+    }
+
+    class Seguridad {
+        + Long id
+        + boolean autorizado
+        + LocalDateTime fechaAutorizacion
+        + Usuario usuario
+        + String accion
+        + boolean verificarAcceso(Usuario usuario, Hechizo hechizo)
+    }
+
+    class Registro {
+        + Long id
+        + Usuario usuario
+        + String accion
+        + LocalDateTime fecha
+        + String resultado
+    }
+
+    class SistemaMagico {
+        + List<Hechizo> listaHechizos
+        + List<Usuario> usuarios
+        + void lanzarHechizo(Usuario usuario, Hechizo hechizo)
+        + void registrarEventoMagico(Usuario usuario, EventoMagico evento)
+        + void autenticarUsuario(Usuario usuario)
+    }
+}
+
+Credenciales "1" -- "1" Usuario : tiene
+Usuario "1" --> "1" Rol : tiene un
+Usuario "1" --> "1..*" Hechizo : puede lanzar
+Hechizo --> EventoMagico : genera
+EventoMagico "1" --> "1" Auditoria : audita
+Seguridad --> Usuario : verifica permisos de
+Seguridad --> Hechizo : verifica permisos de
+Registro "1" --> "1" Usuario : guarda acciones
+SistemaMagico --> Hechizo : gestiona
+SistemaMagico --> EventoMagico : registra
+SistemaMagico --> Seguridad : verifica permisos
 
 @enduml

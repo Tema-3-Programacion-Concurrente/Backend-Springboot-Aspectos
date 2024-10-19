@@ -1,3 +1,25 @@
 @startuml
+left to right direction
+
+actor Usuario
+actor Admin
+
+usecase "Lanzar Hechizo" as UC1
+usecase "Autenticar Usuario" as UC2
+usecase "Registrar Evento Magico" as UC3
+usecase "Auditar Hechizo Lanzado" as UC4
+usecase "Verificar Acceso a Hechizo" as UC5
+usecase "Generar Reportes de Auditoría" as UC6
+
+Usuario --> UC1 : Lanza Hechizo
+Usuario --> UC2 : Se Autentica
+Usuario --> UC3 : Causa Evento Magico
+
+Admin --> UC6 : Genera Reportes de Auditoría
+Admin --> UC4 : Audita Hechizos Lanzados
+
+UC5 <|-- UC1 : Verificar Acceso antes de Lanzar
+UC4 <|-- UC3 : Auditar después del Evento
 
 @enduml
+
