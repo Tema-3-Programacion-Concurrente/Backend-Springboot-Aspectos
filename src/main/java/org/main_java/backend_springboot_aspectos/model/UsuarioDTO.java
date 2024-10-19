@@ -40,4 +40,7 @@ public class UsuarioDTO {
     private Long credencialesId;
 
     private OffsetDateTime dateCreated;
+
+    @NotNull
+    private int poder;
 }

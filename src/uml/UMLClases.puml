@@ -7,11 +7,13 @@ package "Domain" {
         + Long id
         + String username
         + String password
+        + boolean validarCredenciales(String username, String password)
     }
 
     class Rol {
         + Long id
         + String nombreRol
+        + boolean tienePermiso(String permiso)
     }
 
     class Usuario {
@@ -24,6 +26,8 @@ package "Domain" {
         + String direccion
         + Credenciales credenciales
         + Rol rol
+        + boolean autenticar(String username, String password)
+        + boolean tienePermisoParaHechizo(Hechizo hechizo)
     }
 
     class Hechizo {
@@ -34,6 +38,22 @@ package "Domain" {
         + boolean esPermitido(Usuario usuario)
     }
 
+    class HechizoFuego {
+        + void ejecutar()
+    }
+
+    class HechizoAgua {
+        + void ejecutar()
+    }
+
+    class HechizoAire {
+        + void ejecutar()
+    }
+
+    class HechizoRoca {
+        + void ejecutar()
+    }
+
     class EventoMagico {
         + Long id
         + String descripcion
@@ -41,6 +61,7 @@ package "Domain" {
         + String tipoEvento
         + Usuario lanzador
         + Hechizo hechizoLanzado
+        + void registrarEvento(Usuario usuario, Hechizo hechizo)
     }
 
     class Auditoria {
@@ -50,6 +71,7 @@ package "Domain" {
         + String descripcion
         + Usuario usuario
         + EventoMagico eventoAuditable
+        + void auditarEvento(EventoMagico evento)
     }
 
     class Seguridad {
@@ -67,6 +89,7 @@ package "Domain" {
         + String accion
         + LocalDateTime fecha
         + String resultado
+        + void registrarAccion(Usuario usuario, String accion, String resultado)
     }
 
     class SistemaMagico {
@@ -75,6 +98,11 @@ package "Domain" {
         + void lanzarHechizo(Usuario usuario, Hechizo hechizo)
         + void registrarEventoMagico(Usuario usuario, EventoMagico evento)
         + void autenticarUsuario(Usuario usuario)
+        + void auditarEventoMagico(EventoMagico evento)
+    }
+
+    class HechizoFactory {
+        + Hechizo crearHechizo(String tipo)
     }
 }
 
@@ -90,4 +118,11 @@ SistemaMagico --> Hechizo : gestiona
 SistemaMagico --> EventoMagico : registra
 SistemaMagico --> Seguridad : verifica permisos
 
+Hechizo <|-- HechizoFuego
+Hechizo <|-- HechizoAgua
+Hechizo <|-- HechizoAire
+Hechizo <|-- HechizoRoca
+SistemaMagico --> HechizoFactory : usa
+
 @enduml
+

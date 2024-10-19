@@ -6,11 +6,10 @@ import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name= "Credenciale")
+@Table(name = "Credenciales")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-
 public class Credenciales {
 
     @Id
@@ -25,5 +24,5 @@ public class Credenciales {
     private String password;
 
     @OneToOne(mappedBy = "usuario")
-    private Usuario credencial;
+    private Usuario credencial;  // Relación con Usuario
 }

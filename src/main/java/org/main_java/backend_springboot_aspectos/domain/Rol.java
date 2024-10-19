@@ -8,11 +8,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.Set;
 
 @Entity
-@Table(name= "Rols")
+@Table(name = "Rols")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-
 public class Rol {
 
     @Id
@@ -22,7 +21,6 @@ public class Rol {
     @Column(nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "usuarios")
-    private Set<Usuario> rolId;
-
+    @OneToMany(mappedBy = "rol")
+    private Set<Usuario> usuarios;  // Relación con Usuario (múltiples usuarios pueden tener un Rol)
 }

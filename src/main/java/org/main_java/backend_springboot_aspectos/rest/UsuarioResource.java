@@ -1,9 +1,7 @@
 package org.main_java.backend_springboot_aspectos.rest;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.main_java.backend_springboot_aspectos.model.UsuarioDTO;
 import org.main_java.backend_springboot_aspectos.service.UsuarioService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +18,6 @@ public class UsuarioResource {
     }
 
     @GetMapping
-    @ApiResponse(responseCode = "200", description = "Get all users")
     public ResponseEntity<List<UsuarioDTO>> getAllUsuarios() {
         return ResponseEntity.ok(usuarioService.findAll());
     }
@@ -32,10 +29,9 @@ public class UsuarioResource {
     }
 
     @PostMapping
-    @ApiResponse(responseCode = "201", description = "Create a new user")
     public ResponseEntity<Long> createUsuario(@RequestBody final UsuarioDTO usuarioDTO) {
         Long createdId = usuarioService.create(usuarioDTO);
-        return new ResponseEntity<>(createdId, HttpStatus.CREATED);
+        return ResponseEntity.ok(createdId);
     }
 
     @PutMapping("/{id}")
@@ -46,10 +42,15 @@ public class UsuarioResource {
     }
 
     @DeleteMapping("/{id}")
-    @ApiResponse(responseCode = "204", description = "Delete a user")
     public ResponseEntity<Void> deleteUsuario(@PathVariable final Long id) {
         usuarioService.delete(id);
         return ResponseEntity.noContent().build();
     }
-}
 
+    // Nueva ruta para aumentar el poder del usuario
+    @PutMapping("/{id}/aumentar-poder")
+    public ResponseEntity<Void> aumentarPoderUsuario(@PathVariable final Long id, @RequestParam int incremento) {
+        usuarioService.aumentarPoderUsuario(id, incremento);
+        return ResponseEntity.ok().build();
+    }
+}

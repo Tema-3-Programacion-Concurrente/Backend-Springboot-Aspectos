@@ -62,6 +62,14 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
+    // Metodo para incrementar el poder del usuario
+    public void aumentarPoderUsuario(Long id, int incremento) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+        usuario.aumentarPoder(incremento);
+        usuarioRepository.save(usuario);
+    }
+
     private UsuarioDTO mapToDTO(final Usuario usuario, final UsuarioDTO usuarioDTO) {
         usuarioDTO.setId(usuario.getId());
         usuarioDTO.setNombre(usuario.getNombre());
@@ -71,8 +79,8 @@ public class UsuarioService {
         usuarioDTO.setTelefono(usuario.getTelefono());
         usuarioDTO.setDireccion(usuario.getDireccion());
         usuarioDTO.setRolId(usuario.getUsuarios() == null ? null : usuario.getUsuarios().getId());
-        usuarioDTO.setCredencialesId(usuario.getUsuario() == null ? null : usuario.getUsuario().getId());
         usuarioDTO.setDateCreated(usuario.getDateCreated());
+        usuarioDTO.setPoder(usuario.getPoder()); // Mapear el nuevo campo de poder
         return usuarioDTO;
     }
 
@@ -84,18 +92,8 @@ public class UsuarioService {
         usuario.setTelefono(usuarioDTO.getTelefono());
         usuario.setDireccion(usuarioDTO.getDireccion());
 
-        final Rol rol = usuarioDTO.getRolId() == null
-                ? null
-                : rolRepository.findById(usuarioDTO.getRolId())
-                .orElseThrow(() -> new NotFoundException("Rol no encontrado"));
-        usuario.setUsuarios(rol);
-
-        final Credenciales credenciales = usuarioDTO.getCredencialesId() == null
-                ? null
-                : credencialesRepository.findById(usuarioDTO.getCredencialesId())
-                .orElseThrow(() -> new NotFoundException("Credenciales no encontradas"));
-        usuario.setUsuario(credenciales);
-
+        // Manejo del rol y credenciales
+        usuario.setPoder(usuarioDTO.getPoder()); // Mapear el nuevo campo de poder
         return usuario;
     }
 }
