@@ -96,8 +96,7 @@ package "Domain" {
         + List<Hechizo> listaHechizos
         + List<Usuario> usuarios
         + void lanzarHechizo(Usuario usuario, Hechizo hechizo)
-        + void registrarEventoMagico(Usuario usuario, EventoMagico evento)
-        + void autenticarUsuario(Usuario usuario)
+        + void registrarEventoMagico(Usuario usuario, Hechizo hechizo)
         + void auditarEventoMagico(EventoMagico evento)
     }
 

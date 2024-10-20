@@ -24,5 +24,5 @@ public class Credenciales {
     private String password;
 
     @OneToOne(mappedBy = "usuario")
-    private Usuario credencial;  // Relación con Usuario
+    private Usuario usuario;  // Relación con Usuario
 }

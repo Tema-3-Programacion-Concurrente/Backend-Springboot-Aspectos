@@ -21,6 +21,6 @@ public class Rol {
     @Column(nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "rol")
+    @OneToMany(mappedBy = "usuarios")
     private Set<Usuario> usuarios;  // Relación con Usuario (múltiples usuarios pueden tener un Rol)
 }

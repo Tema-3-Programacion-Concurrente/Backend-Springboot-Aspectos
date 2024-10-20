@@ -1,5 +1,6 @@
 package org.main_java.backend_springboot_aspectos.service;
 
+import jakarta.transaction.Transactional;
 import org.main_java.backend_springboot_aspectos.domain.Credenciales;
 import org.main_java.backend_springboot_aspectos.domain.Rol;
 import org.main_java.backend_springboot_aspectos.domain.Usuario;
@@ -95,5 +96,11 @@ public class UsuarioService {
         // Manejo del rol y credenciales
         usuario.setPoder(usuarioDTO.getPoder()); // Mapear el nuevo campo de poder
         return usuario;
+    }
+
+    @Transactional
+    public Usuario obtenerUsuarioPorId(Long id) {
+        return usuarioRepository.findByUsuario_Id(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
     }
 }
