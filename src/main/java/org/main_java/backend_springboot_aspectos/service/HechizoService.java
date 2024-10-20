@@ -29,6 +29,9 @@ public class HechizoService {
     @Autowired
     private RegistroService registroService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     // CRUD
@@ -112,6 +115,7 @@ public class HechizoService {
 
                 if (hechizo.esPermitido(usuario)){
                 registroService.registrarAccion(usuario, "Lanzar Hechizo", "Realizado");
+                usuarioService.aumentarPoderUsuario(usuario.getId(), 1);
                 }
                 else {
                     registroService.registrarAccion(usuario, "Lanzar Hechizo", "Intento fallido");

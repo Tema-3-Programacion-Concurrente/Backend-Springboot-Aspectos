@@ -68,6 +68,7 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
         usuario.aumentarPoder(incremento);
+        System.out.println("El poder total del usuario tras lanzar el hechizo es de: " + usuario.getPoder());
         usuarioRepository.save(usuario);
     }
 
