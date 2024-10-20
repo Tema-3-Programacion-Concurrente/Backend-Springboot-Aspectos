@@ -88,6 +88,7 @@ public class AuthService {
         nuevoUsuario.setDireccion(registerRequest.getDireccion());
         nuevoUsuario.setUsuario(credenciales);
         nuevoUsuario.setUsuarios(rol);
+        nuevoUsuario.setPoder(registerRequest.getPoder());
 
         usuarioRepository.save(nuevoUsuario);
 
@@ -123,6 +124,11 @@ public class AuthService {
         String contrasena = registerRequest.getContrasena();
         if (!isValidPassword(contrasena)) {
             throw new UserValidationException("La contraseña debe contener al menos una letra, un número y un carácter especial.");
+        }
+
+        int poderUser = registerRequest.getPoder();
+        if (poderUser < 0 ){
+            throw new UserValidationException("El poder no puede ser inferior a cero.");
         }
     }
 

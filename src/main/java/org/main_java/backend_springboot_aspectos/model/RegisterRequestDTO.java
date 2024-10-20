@@ -33,5 +33,8 @@ public class RegisterRequestDTO {
 
     @NotNull
     private String role;
+
+    @NotNull
+    private int poder;
 }
 
