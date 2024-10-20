@@ -1,12 +1,23 @@
 package org.main_java.backend_springboot_aspectos.service.factory;
 
 import org.main_java.backend_springboot_aspectos.domain.hechizos.*;
+import org.main_java.backend_springboot_aspectos.repos.HechizoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class HechizoFactoryService {
 
-    // Metodo que utiliza el patrón Factory para crear diferentes tipos de hechizos
+    @Autowired
+    private HechizoRepository hechizoRepository;
+
+    public Hechizo obtenerHechizo(String tipo) {
+        Optional<Hechizo> hechizo = hechizoRepository.findByNombre(tipo.toLowerCase());
+        return hechizo.orElseThrow(() -> new IllegalArgumentException("No se encontró un hechizo del tipo: " + tipo));
+    }
+
     public Hechizo crearHechizo(String tipo) {
         switch (tipo.toLowerCase()) {
             case "fuego":
@@ -22,4 +33,5 @@ public class HechizoFactoryService {
         }
     }
 }
+
 

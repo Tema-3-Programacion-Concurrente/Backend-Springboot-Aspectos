@@ -28,23 +28,20 @@ public class SeguridadAspecto {
      * Aspecto que verifica si un usuario tiene permisos para lanzar un hechizo antes de la ejecución.
      * Aplica la verificación de seguridad antes de que se ejecute cualquier hechizo.
      *
-     * @param usuarioId El ID del usuario que intenta lanzar el hechizo.
-     * @param tipoHechizo El tipo de hechizo que se intenta lanzar.
+     * @param usuario El ID del usuario que intenta lanzar el hechizo.
+     * @param hechizo El tipo de hechizo que se intenta lanzar.
      */
-    @Before("execution(* org.main_java.backend_springboot_aspectos.service.HechizoService.lanzarHechizo(..)) && args(usuarioId, tipoHechizo)")
-    public void verificarPermisoLanzarHechizo(Long usuarioId, String tipoHechizo) {
-        // Obtener el Usuario desde el servicio
-        Usuario usuario = usuarioService.obtenerUsuarioPorId(usuarioId);
-
-        // Usar HechizoFactoryService para crear el hechizo basado en el tipo
-        Hechizo hechizo = hechizoFactoryService.crearHechizo(tipoHechizo);
+    @Before("execution(* org.main_java.backend_springboot_aspectos.service.HechizoService.lanzarHechizo(..)) && args(usuario, hechizo)")
+    public void verificarPermisoLanzarHechizo(Usuario usuario, Hechizo hechizo) {
+        // Obtener el nombre o tipo del hechizo directamente del objeto
+        String tipoHechizo = hechizo.getNombre(); // o un metodo que devuelva el tipo
 
         // Verificar si el usuario tiene permiso para lanzar el hechizo
         boolean autorizado = seguridadService.verificarAcceso(usuario, hechizo);
 
         // Si el usuario no tiene permiso, lanzamos una excepción
         if (!autorizado) {
-            throw new SecurityException("El usuario " + usuario.getNombre() + " no tiene permiso para lanzar el hechizo " + hechizo.getNombre());
+            throw new SecurityException("El usuario " + usuario.getNombre() + " no tiene permiso para lanzar el hechizo " + tipoHechizo);
         }
     }
 }

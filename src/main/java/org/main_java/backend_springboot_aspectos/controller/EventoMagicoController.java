@@ -18,13 +18,13 @@ public class EventoMagicoController {
         this.eventoMagicoService = eventoMagicoService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     public CompletableFuture<ResponseEntity<EventoMagicoDTO>> obtenerEventoMagicoPorId(@PathVariable Long id) {
         return eventoMagicoService.obtenerEventoMagicoPorId(id)
                 .thenApply(ResponseEntity::ok);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public CompletableFuture<ResponseEntity<List<EventoMagicoDTO>>> obtenerTodosLosEventosMagicos() {
         return eventoMagicoService.obtenerTodosLosEventosMagicos()
                 .thenApply(ResponseEntity::ok);

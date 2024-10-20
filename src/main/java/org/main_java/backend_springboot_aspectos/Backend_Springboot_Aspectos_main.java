@@ -1,6 +1,5 @@
 package org.main_java.backend_springboot_aspectos;
 
-import org.main_java.backend_springboot_aspectos.domain.hechizos.*;
 import org.main_java.backend_springboot_aspectos.model.RegisterRequestDTO;
 import org.main_java.backend_springboot_aspectos.service.AuthService;
 import org.main_java.backend_springboot_aspectos.service.HechizoService;
@@ -32,11 +31,12 @@ public class Backend_Springboot_Aspectos_main {
                     "Usuario", "ApellidoCC", "ApellidoDD", "usuario@gmail.com", 555666777,
                     "Avenida Tercera 789", "a12345_679", "user", 45
             );
-            // Creación de hechizos concretos
-            crearHechizoFuego(hechizoService, "Fuego", 50);
-            crearHechizoAgua(hechizoService, "Agua", 40);
-            crearHechizoRoca(hechizoService, "Roca", 60);
-            crearHechizoAire(hechizoService, "Aire", 30);
+
+            // Creación de hechizos utilizando HechizoFactory
+            crearHechizo(hechizoService, "fuego", 50);
+            crearHechizo(hechizoService, "agua", 40);
+            crearHechizo(hechizoService, "roca", 60);
+            crearHechizo(hechizoService, "aire", 30);
         };
     }
 
@@ -60,52 +60,10 @@ public class Backend_Springboot_Aspectos_main {
         System.out.println("Usuario registrado con nombre: " + nombre + " y rol: " + rolNombre);
     }
 
-    private void crearHechizoFuego(HechizoService hechizoService, String nombre, int poder) {
-        // Crear un hechizo de fuego
-        HechizoFuego hechizoFuego = new HechizoFuego();
-        hechizoFuego.setNombre(nombre);
-        hechizoFuego.setPoder(poder);
+    private void crearHechizo(HechizoService hechizoService, String tipoHechizo, int poder) {
+        // Crear un hechizo utilizando el factory y el tipo de hechizo
+        hechizoService.crearHechizo(tipoHechizo, poder);
 
-        // Guardar el hechizo en la base de datos a través del servicio de hechizos
-        hechizoService.crearHechizo(hechizoFuego);
-
-        System.out.println("Hechizo de fuego creado: " + nombre + " con poder: " + poder);
-    }
-
-    private void crearHechizoAgua(HechizoService hechizoService, String nombre, int poder) {
-        // Crear un hechizo de hielo
-        HechizoAgua hechizoAgua = new HechizoAgua();
-        hechizoAgua.setNombre(nombre);
-        hechizoAgua.setPoder(poder);
-
-        // Guardar el hechizo en la base de datos a través del servicio de hechizos
-        hechizoService.crearHechizo(hechizoAgua);
-
-        System.out.println("Hechizo de Agua creado: " + nombre + " con poder: " + poder);
-    }
-
-    private void crearHechizoRoca(HechizoService hechizoService, String nombre, int poder) {
-        // Crear un hechizo de relámpago
-        HechizoRoca hechizoRoca = new HechizoRoca();
-        hechizoRoca.setNombre(nombre);
-        hechizoRoca.setPoder(poder);
-
-        // Guardar el hechizo en la base de datos a través del servicio de hechizos
-        hechizoService.crearHechizo(hechizoRoca);
-
-        System.out.println("Hechizo de Roca creado: " + nombre + " con poder: " + poder);
-    }
-
-    private void crearHechizoAire(HechizoService hechizoService, String nombre, int poder) {
-        // Crear un hechizo de curación
-        HechizoAire hechizoAire = new HechizoAire();
-        hechizoAire.setNombre(nombre);
-        hechizoAire.setPoder(poder);
-
-        // Guardar el hechizo en la base de datos a través del servicio de hechizos
-        hechizoService.crearHechizo(hechizoAire);
-
-        System.out.println("Hechizo de Aire creado: " + nombre + " con poder: " + poder);
+        System.out.println("Hechizo de " + tipoHechizo + " creado con poder: " + poder);
     }
 }
-

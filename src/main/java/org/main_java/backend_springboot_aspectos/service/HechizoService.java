@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.main_java.backend_springboot_aspectos.domain.hechizos.Hechizo;
 import org.main_java.backend_springboot_aspectos.domain.Usuario;
 import org.main_java.backend_springboot_aspectos.repos.HechizoRepository;
+import org.main_java.backend_springboot_aspectos.service.factory.HechizoFactoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class HechizoService {
     private HechizoRepository hechizoRepository;
 
     @Autowired
+    private HechizoFactoryService hechizoFactoryService;
+
+    @Autowired
     private EventoMagicoService eventoMagicoService;
 
     @Autowired
@@ -30,7 +34,17 @@ public class HechizoService {
     // CRUD
 
     @Transactional
-    public Hechizo crearHechizo(Hechizo hechizo) {
+    public Hechizo crearHechizo(String tipo, int poder) {
+        // Crear el hechizo usando el factory
+        Hechizo hechizo = hechizoFactoryService.crearHechizo(tipo);
+
+        // Establecer el nombre del hechizo (asegúrate de que se use el nombre correcto)
+        hechizo.setNombre(tipo);  // Asignar el nombre basado en el tipo
+
+        // Asignar el poder al hechizo
+        hechizo.setPoder(poder);
+
+        // Guardar el hechizo en la base de datos
         return hechizoRepository.save(hechizo);
     }
 
