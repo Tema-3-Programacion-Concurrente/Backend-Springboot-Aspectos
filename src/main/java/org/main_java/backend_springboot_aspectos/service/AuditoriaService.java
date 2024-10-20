@@ -1,5 +1,6 @@
 package org.main_java.backend_springboot_aspectos.service;
 
+import com.sun.jdi.PrimitiveValue;
 import org.main_java.backend_springboot_aspectos.domain.Auditoria;
 import org.main_java.backend_springboot_aspectos.domain.EventoMagico;
 import org.main_java.backend_springboot_aspectos.model.AuditoriaDTO;
@@ -19,6 +20,9 @@ public class AuditoriaService {
 
     @Autowired
     private AuditoriaRepository auditoriaRepository;
+
+    @Autowired
+    private RegistroService registroService;
 
     // Pool de hilos para manejar la concurrencia en la auditoría
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
@@ -40,6 +44,8 @@ public class AuditoriaService {
             auditoria.setEventoAuditable(evento);
 
             auditoriaRepository.save(auditoria);
+
+            registroService.registrarAccion(auditoria.getUsuario(), "AUDITORIA", "Evento-Auditado con exito");
             System.out.println("Auditoría registrada para el evento: " + auditoria.getDescripcion());
         });
     }
@@ -100,7 +106,6 @@ public class AuditoriaService {
         auditoria.setAccion(dto.getAccion());
         auditoria.setDescripcion(dto.getDescripcion());
         auditoria.setFecha(dto.getFecha());
-        // Aquí debes mapear los objetos de usuario y evento auditable según sus repositorios
         return auditoria;
     }
 }

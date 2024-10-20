@@ -30,6 +30,9 @@ public class AuthService {
     @Autowired
     private RolRepository rolRepository;
 
+    @Autowired
+    private RegistroService registroService;
+
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Transactional
@@ -40,8 +43,13 @@ public class AuthService {
             Usuario usuario = usuarioOpt.get();
             if (passwordEncoder.matches(loginRequest.getContrasena(), usuario.getUsuario().getPassword())) {
                 String rol = usuario.getUsuarios().getNombre();
+
+                registroService.registrarAccion(usuario, "Login", "EXITO");
+
                 return ResponseEntity.ok(new AuthResponseDTO("Login exitoso", "FAKE_JWT_TOKEN", rol));
             } else {
+                registroService.registrarAccion(usuario, "Login", "FALLIDO");
+
                 return ResponseEntity.status(401).body(new AuthResponseDTO("Credenciales incorrectas", null, null));
             }
         }
@@ -91,6 +99,8 @@ public class AuthService {
         nuevoUsuario.setPoder(registerRequest.getPoder());
 
         usuarioRepository.save(nuevoUsuario);
+
+        registroService.registrarAccion(nuevoUsuario, "REGISTRO", "EXITO AL REGISTRARSE");
 
         return ResponseEntity.ok(new AuthResponseDTO("Usuario registrado con éxito", null, rolNombre));
     }

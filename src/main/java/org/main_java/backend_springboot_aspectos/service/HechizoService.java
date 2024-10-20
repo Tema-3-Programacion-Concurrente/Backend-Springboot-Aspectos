@@ -19,6 +19,12 @@ public class HechizoService {
     @Autowired
     private HechizoRepository hechizoRepository;
 
+    @Autowired
+    private EventoMagicoService eventoMagicoService;
+
+    @Autowired
+    private RegistroService registroService;
+
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     // CRUD
@@ -88,6 +94,15 @@ public class HechizoService {
             synchronized (this) {
                 System.out.println("Lanzando hechizo: " + hechizo.getNombre());
                 hechizo.ejecutar();
+                eventoMagicoService.registrarEventoMagico(usuario, hechizo);
+
+                if (hechizo.esPermitido(usuario)){
+                registroService.registrarAccion(usuario, "Lanzar Hechizo", "Realizado");
+                }
+                else {
+                    registroService.registrarAccion(usuario, "Lanzar Hechizo", "Intento fallido");
+                }
+
                 return "Hechizo " + hechizo.getNombre() + " ejecutado correctamente.";
             }
         });
