@@ -178,6 +178,7 @@ public class EventoMagicoService {
             try {
                 // Crear un nuevo evento mágico
                 EventoMagico eventoMagico = new EventoMagico();
+                eventoMagico.setTipoEvento("Lanzar Hechizo");
                 eventoMagico.setDescripcion("El usuario " + usuario.getNombre() + " lanzó el hechizo " + hechizo.getNombre());
                 eventoMagico.setFecha(java.time.LocalDateTime.now());
                 eventoMagico.setLanzador(usuario);
