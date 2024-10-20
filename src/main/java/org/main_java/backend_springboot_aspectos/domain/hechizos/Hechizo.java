@@ -1,5 +1,7 @@
 package org.main_java.backend_springboot_aspectos.domain.hechizos;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
         import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,17 @@ import java.util.concurrent.Executors;
 @Setter
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_hechizo", discriminatorType = DiscriminatorType.STRING)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "tipoHechizo"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = HechizoFuego.class, name = "fuego"),
+        @JsonSubTypes.Type(value = HechizoAgua.class, name = "agua"),
+        @JsonSubTypes.Type(value = HechizoAire.class, name = "aire"),
+        @JsonSubTypes.Type(value = HechizoRoca.class, name = "roca")
+})
 public abstract class Hechizo {
 
     @Id

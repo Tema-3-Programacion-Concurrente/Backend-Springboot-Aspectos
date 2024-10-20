@@ -53,7 +53,6 @@ public class Usuario {
     @Column(nullable = false)
     private int poder; // Nuevo atributo para definir el nivel de poder del usuario
 
-    // Método adicional para actualizar el poder del usuario si es necesario
     public void aumentarPoder(int incremento) {
         this.poder += incremento;
     }

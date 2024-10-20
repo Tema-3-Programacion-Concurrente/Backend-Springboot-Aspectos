@@ -41,21 +41,35 @@ public class AuthService {
 
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
+
+            // Verificar la contraseña
             if (passwordEncoder.matches(loginRequest.getContrasena(), usuario.getUsuario().getPassword())) {
                 String rol = usuario.getUsuarios().getNombre();
+                Long userId = usuario.getId();
 
+                // Registrar la acción de login
                 registroService.registrarAccion(usuario, "Login", "EXITO");
 
-                return ResponseEntity.ok(new AuthResponseDTO("Login exitoso", "FAKE_JWT_TOKEN", rol));
-            } else {
-                registroService.registrarAccion(usuario, "Login", "FALLIDO");
+                // Crear el objeto AuthResponseDTO con todos los detalles del usuario y userId
+                AuthResponseDTO authResponse = new AuthResponseDTO(
+                        "Login exitoso",
+                        "FAKE_JWT_TOKEN",
+                        rol,
+                        userId,  // Pasar el userId explícitamente
+                        usuario  // Pasar el usuario completo
+                );
 
-                return ResponseEntity.status(401).body(new AuthResponseDTO("Credenciales incorrectas", null, null));
+                return ResponseEntity.ok(authResponse);
+            } else {
+                // Registrar intento fallido de login
+                registroService.registrarAccion(usuario, "Login", "FALLIDO");
+                return ResponseEntity.status(401).body(new AuthResponseDTO("Credenciales incorrectas", null, null, null, null));
             }
         }
 
-        return ResponseEntity.status(404).body(new AuthResponseDTO("Usuario no encontrado", null, null));
+        return ResponseEntity.status(404).body(new AuthResponseDTO("Usuario no encontrado", null, null, null, null));
     }
+
 
     @Transactional
     public ResponseEntity<AuthResponseDTO> register(RegisterRequestDTO registerRequest, String rolNombre) {
@@ -64,15 +78,15 @@ public class AuthService {
 
         // Verificar si el usuario ya existe
         if (usuarioRepository.findByCorreo(registerRequest.getCorreo()).isPresent()) {
-            return ResponseEntity.status(400).body(new AuthResponseDTO("El usuario ya existe", null, null));
+            return ResponseEntity.status(400).body(new AuthResponseDTO("El usuario ya existe", null, null, null, null));
         }
 
         // Validar rol
         if (!"admin".equalsIgnoreCase(rolNombre) && !"user".equalsIgnoreCase(rolNombre) && !"researcher".equalsIgnoreCase(rolNombre)) {
-            return ResponseEntity.status(400).body(new AuthResponseDTO("Rol no válido. Use 'admin' o 'user'.", null, null));
+            return ResponseEntity.status(400).body(new AuthResponseDTO("Rol no válido. Use 'admin', 'user', o 'researcher'.", null, null, null, null));
         }
 
-        // Buscar o crear rol
+        // Buscar o crear el rol
         Optional<Rol> rolOpt = rolRepository.findByNombre(rolNombre);
         Rol rol = rolOpt.orElseGet(() -> {
             Rol nuevoRol = new Rol();
@@ -94,16 +108,27 @@ public class AuthService {
         nuevoUsuario.setCorreo(registerRequest.getCorreo());
         nuevoUsuario.setTelefono(registerRequest.getTelefono());
         nuevoUsuario.setDireccion(registerRequest.getDireccion());
-        nuevoUsuario.setUsuario(credenciales);
-        nuevoUsuario.setUsuarios(rol);
+        nuevoUsuario.setUsuario(credenciales); // Relación con las credenciales
+        nuevoUsuario.setUsuarios(rol); // Relación con el rol
         nuevoUsuario.setPoder(registerRequest.getPoder());
 
+        // Guardar el nuevo usuario
         usuarioRepository.save(nuevoUsuario);
 
+        // Registrar la acción de registro
         registroService.registrarAccion(nuevoUsuario, "REGISTRO", "EXITO AL REGISTRARSE");
 
-        return ResponseEntity.ok(new AuthResponseDTO("Usuario registrado con éxito", null, rolNombre));
+        // Retornar la respuesta con AuthResponseDTO, incluyendo el id y todos los datos del nuevo usuario
+        return ResponseEntity.ok(new AuthResponseDTO(
+                "Usuario registrado con éxito",
+                null, // No se genera un token en el registro, puede estar vacío
+                rolNombre, // Pasamos el rol del nuevo usuario
+                nuevoUsuario.getId(), // El id del nuevo usuario
+                nuevoUsuario // El objeto usuario con toda su información
+        ));
     }
+
+
 
     private void validateUserInput(RegisterRequestDTO registerRequest) {
         // Validaciones de nombres
