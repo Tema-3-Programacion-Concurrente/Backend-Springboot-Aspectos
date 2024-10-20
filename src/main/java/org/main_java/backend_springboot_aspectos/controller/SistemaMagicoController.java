@@ -50,8 +50,16 @@ public class SistemaMagicoController {
     }
 
     @PostMapping("/auditar-evento-magico")
-    public ResponseEntity<String> auditarEventoMagico(@RequestBody EventoMagico evento) {
-        sistemaMagicoService.auditarEventoMagico(evento);
+    public ResponseEntity<String> auditarEventoMagico(@RequestBody Map<String, Long> eventoIdMap) {
+        Long eventoId = eventoIdMap.get("eventoId"); // Extraer el ID del evento del cuerpo de la solicitud
+        EventoMagico evento = sistemaMagicoService.obtenerEventoPorId(eventoId); // Busca el evento por ID
+
+        if (evento == null) {
+            return new ResponseEntity<>("Evento no encontrado", HttpStatus.NOT_FOUND);
+        }
+
+        sistemaMagicoService.auditarEventoMagico(evento); // Auditar el evento
         return new ResponseEntity<>("Evento mágico auditado", HttpStatus.OK);
     }
+
 }
