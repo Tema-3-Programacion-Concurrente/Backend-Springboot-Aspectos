@@ -113,7 +113,6 @@ public class HechizoService {
                 eventoMagicoService.registrarEventoMagico(usuario, hechizo);
 
                 if (hechizo.esPermitido(usuario)){
-                registroService.registrarAccion(usuario, "Lanzar Hechizo", "Realizado");
                 usuarioService.aumentarPoderUsuario(usuario.getId(), 1);
                 }
                 else {

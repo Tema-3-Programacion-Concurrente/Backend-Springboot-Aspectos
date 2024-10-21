@@ -18,7 +18,7 @@ public class RegistroAspecto {
     @AfterReturning("execution(* org.main_java.backend_springboot_aspectos.service.HechizoService.lanzarHechizo(..)) && args(usuario, hechizo)")
     public void registrarAccion(Usuario usuario, Hechizo hechizo) {
         registroService.registrarAccion(usuario, "Lanzar Hechizo", "Éxito");
-        System.out.println("Hechizo lanzado: " + hechizo.getNombre());
+        System.out.println("Hechizo lanzado: " + hechizo.getNombre() + " ha sido registrado con exito su accion[!] [ASPECTO]");
     }
 }
 
