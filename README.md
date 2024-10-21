@@ -20,16 +20,17 @@ Marcos García Benito Bilbao
 Un sistema avanzado para la gestión de hechizos y eventos mágicos utilizando AOP con Spring Boot.
 
 ## Tabla de Contenidos
-- Introducción
-- Descripción General de los Servicios
-  - Funcionalidad
-  - Características Clave
-- Implementación de Concurrencia
-  - Tipos de Concurrencia Utilizados
-  - Razones para Implementar Concurrencia
-  - Concurrencia en los Servicios
-- Descripción General de los Aspectos
-- Patrones Utilizados
+
+* [Introducción](#introducci%C3%B3n)
+* [Descripción General de los Servicios](#descripci%C3%B3n-general-de-los-servicios)
+  * [Funcionalidad](#funcionalidad)
+  * [Características Clave](#caracter%C3%ADsticas-clave)
+* [Implementación de Concurrencia](#implementaci%C3%B3n-de-concurrencia)
+  * [Tipos de Concurrencia Utilizados](#tipos-de-concurrencia-utilizados)
+  * [Razones para Implementar Concurrencia](#razones-para-implementar-concurrencia)
+  * [Concurrencia en los Servicios](#concurrencia-en-los-servicios)
+* [Descripción General de los Aspectos](#descripci%C3%B3n-general-de-los-aspectos)
+* [Patrones Utilizados](#patrones-utilizados)
 
 ## Introducción
 El Ministerio de Magia está desarrollando un sistema avanzado para la gestión de hechizos y eventos mágicos utilizando la Programación Orientada a Aspectos (AOP). Este sistema maneja diversas preocupaciones transversales, como la seguridad, la auditoría y la gestión de transacciones, asegurando la eficiencia y la capacidad de respuesta. Utilizando AOP con Spring, se ha implementado un sistema modular que permite la integración y gestión de diferentes módulos de manera eficiente y segura.
