@@ -103,8 +103,7 @@ public class HechizoService {
     @Async
     @Transactional
     public Future<String> lanzarHechizo(Usuario usuario, Hechizo hechizo) {
-        // Verificar permisos antes de lanzar el hechizo
-        verificarPermisos(usuario, hechizo);
+
 
         // Ejecutar el hechizo de forma concurrente, manejando la ejecución en un thread pool
         return executorService.submit(() -> {

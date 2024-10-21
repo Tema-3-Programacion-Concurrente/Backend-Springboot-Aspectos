@@ -38,6 +38,11 @@ public class SeguridadAspecto {
 
         // Verificar si el usuario tiene permiso para lanzar el hechizo
         boolean autorizado = seguridadService.verificarAcceso(usuario, hechizo);
+        if (autorizado){
+            System.out.println("El usuario " + usuario.getNombre() + " tiene permiso para lanzar el hechizo " + tipoHechizo);
+        } else {
+            System.out.println("El usuario " + usuario.getNombre() + " no tiene permiso para lanzar el hechizo " + tipoHechizo);
+        }
 
         // Si el usuario no tiene permiso, lanzamos una excepción
         if (!autorizado) {
