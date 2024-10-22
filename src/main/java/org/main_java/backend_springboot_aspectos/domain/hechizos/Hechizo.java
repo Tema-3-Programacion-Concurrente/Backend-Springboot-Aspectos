@@ -26,7 +26,8 @@ import java.util.concurrent.Executors;
         @JsonSubTypes.Type(value = HechizoFuego.class, name = "fuego"),
         @JsonSubTypes.Type(value = HechizoAgua.class, name = "agua"),
         @JsonSubTypes.Type(value = HechizoAire.class, name = "aire"),
-        @JsonSubTypes.Type(value = HechizoRoca.class, name = "roca")
+        @JsonSubTypes.Type(value = HechizoRoca.class, name = "roca"),
+        @JsonSubTypes.Type(value = HechizoElectro.class, name = "electro")
 })
 public abstract class Hechizo {
 

@@ -28,6 +28,8 @@ public class HechizoFactoryService {
                 return new HechizoAire();
             case "roca":
                 return new HechizoRoca();
+            case "electro":
+                return new HechizoElectro();
             default:
                 throw new IllegalArgumentException("Tipo de hechizo no válido: " + tipo);
         }

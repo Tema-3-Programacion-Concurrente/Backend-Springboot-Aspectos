@@ -37,6 +37,7 @@ public class Backend_Springboot_Aspectos_main {
             crearHechizo(hechizoService, "agua", 40);
             crearHechizo(hechizoService, "roca", 60);
             crearHechizo(hechizoService, "aire", 30);
+            crearHechizo(hechizoService, "electro", 200);
         };
     }
 
